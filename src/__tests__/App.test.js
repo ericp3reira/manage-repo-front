@@ -18,6 +18,34 @@ const actWait = async (amount = 0) => {
 };
 
 describe("App component", () => {
+  it('should be able to list all repositories', async () => {
+    const { getByText, getByTestId } = render(<App />);
+
+    apiMock.onGet('repositories').reply(200, [
+      {
+        id: '0',
+        url: 'https://github.com/josepholiveira',
+        title: 'Desafio ReactJS',
+        techs: ['React', 'Node.js'],
+      },
+      {
+        id: '1',
+        url: 'https://github.com/ericp3reira',
+        title: 'Resolvendo o desafio ReactJS',
+        techs: ['React', 'Node.js'],
+      },
+    ]);
+
+    await actWait();
+
+    expect(getByTestId('repository-list')).toContainElement(
+      getByText('Desafio ReactJS')
+    );
+    expect(getByTestId('repository-list')).toContainElement(
+      getByText('Resolvendo o desafio ReactJS')
+    );
+  });
+
   it("should be able to add new repository", async () => {
     const { getByText, getByTestId } = render(<App />);
 
