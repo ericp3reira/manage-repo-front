@@ -9,13 +9,18 @@ const App = () => {
 
   useEffect(() => {
     api.get('repositories').then(({ data }) => {
-      console.log(data);
       setRepositories(data);
     });
   }, []);
 
   async function handleAddRepository() {
-    // TODO
+    const res = await api.post('repositories', {
+      url: 'https://github.com/ericp3reira',
+      title: `Resolvendo o desafio ReactJS ${Date.now()}`,
+      techs: ['React', 'Node.js'],
+    });
+
+    setRepositories([...repositories, res.data]);
   }
 
   async function handleRemoveRepository(id) {
